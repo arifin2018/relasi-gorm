@@ -1,17 +1,20 @@
 package routes
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"relasi-gorm/controllers"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 
-func Router() {
-	app := fiber.New()
-
+func Router(app *fiber.App) {
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "i'm not okay",
-			"name":    "arifin",
-		})
+		return c.SendString("I'm a GET request!")
 	})
+	app.Get("/users", controllers.UserGetAll)
+	app.Post("/users", controllers.CreateUser)
+	
+	app.Get("/loker", controllers.LokerGetAll)
+	app.Post("/loker", controllers.CreateLoker)
 
-	app.Listen(":8000")
 }
