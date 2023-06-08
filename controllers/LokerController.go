@@ -11,7 +11,7 @@ func LokerGetAll(c *fiber.Ctx) error {
 	
 	var locker []models.Locker
 
-	databases.DB.Find(&locker)
+	databases.DB.Preload("User").Find(&locker)
 
 	return c.JSON(fiber.Map{
 		"locker": locker,
@@ -33,7 +33,7 @@ func CreateLoker(c *fiber.Ctx) error {
 		})
 	}
 
-	databases.DB.Create(&locker)
+	databases.DB.Preload("User").Create(&locker)
 
 	return c.JSON(fiber.Map{
 		"message":"create data successfully",

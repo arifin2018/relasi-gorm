@@ -9,7 +9,7 @@ import (
 
 func UserGetAll(c *fiber.Ctx) error {
 	var users []models.User
-	databases.DB.Find(&users)
+	databases.DB.Preload("Locker").Find(&users)
 
 	return c.Status(200).JSON(fiber.Map{
 		"users": users,
