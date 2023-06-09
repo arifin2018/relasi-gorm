@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"relasi-gorm/databases"
 	"relasi-gorm/models"
 
@@ -25,13 +26,24 @@ func CreatePost(c *fiber.Ctx) error {
 		})
 	}
 
-	if post.Title == "" || post.Body == "" {
+	if post.Title == "" || post.Body == "" || post.TagID == nil {
 		return c.Status(400).JSON(fiber.Map{
-			"err":"title and body is required",
+			"err":"title,body or tagId is required",
 		})
 	}
 
-	databases.DB.Create(&post)
+	
+
+	databases.DB.Debug().Create(&post)
+	fmt.Println(post)
+
+	for _, tagId := range post.TagID {
+		postTag := new(models.PostTag)
+		postTag.PostId = post.ID
+		postTag.TagId = tagId 
+		databases.DB.Create(&postTag)
+	}
+
 
 	return c.JSON(fiber.Map{
 		"message":"create data successfully",

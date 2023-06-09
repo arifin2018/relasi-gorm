@@ -38,6 +38,6 @@ func DatabaseInit() error {
 		panic(err)
 	}
 
-	DB.AutoMigrate(&models.User{},&models.Locker{}, &models.Post{})
+	DB.AutoMigrate(&models.User{},&models.Locker{}, &models.Post{}, &models.Tag{})
 	return nil	
 }

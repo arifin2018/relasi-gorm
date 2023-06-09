@@ -20,4 +20,6 @@ func Router(app *fiber.App) {
 	app.Get("/posts", controllers.PostGetAll)
 	app.Post("/posts", controllers.CreatePost)
 
+	app.Get("/tags", controllers.TagsGetAll)
+	app.Post("/tags", controllers.CreateTags)
 }

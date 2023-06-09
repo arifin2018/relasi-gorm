@@ -6,7 +6,9 @@ type (
 		Title 	string 		`json:"title" form:"name" gorm:"not null"`
 		Body 	string 		`json:"body" form:"body" gorm:"not null"`
 		User_id uint 		`json:"user_id" form:"user_id" gorm:"not null"`
+		TagID 	[]int 		`json:"tag_id" form:"tag_id" gorm:"-"`
 		User 	PostUser 	`json:"user"`
+		Tag 	[]Tag 		`json:"tag" gorm:"many2many:Post_Tags"`
 	}
 
 	UserPost struct{
