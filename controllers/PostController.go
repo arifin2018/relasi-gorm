@@ -7,34 +7,34 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func UserGetAll(c *fiber.Ctx) error {
-	var users []models.User
-	databases.DB.Preload("Locker").Preload("Post").Find(&users)
+func PostGetAll(c *fiber.Ctx) error {
+	var Posts []models.Post
+	databases.DB.Preload("User").Find(&Posts)
 
 	return c.Status(200).JSON(fiber.Map{
-		"users": users,
+		"Post": Posts,
 	})
 }
 
-func CreateUser(c *fiber.Ctx) error {
-	user := new(models.User)
+func CreatePost(c *fiber.Ctx) error {
+	post := new(models.Post)
 
-	if err := c.BodyParser(user); err != nil {
+	if err := c.BodyParser(post); err != nil {
 		return c.Status(503).JSON(fiber.Map{
 			"err":"can't handle request",
 		})
 	}
 
-	if user.Name == "" {
+	if post.Title == "" || post.Body == "" {
 		return c.Status(400).JSON(fiber.Map{
-			"err":"name is required",
+			"err":"title and body is required",
 		})
 	}
 
-	databases.DB.Create(&user)
+	databases.DB.Create(&post)
 
 	return c.JSON(fiber.Map{
 		"message":"create data successfully",
-		"user":user,
+		"post":post,
 	})
 }

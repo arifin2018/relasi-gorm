@@ -17,4 +17,7 @@ func Router(app *fiber.App) {
 	app.Get("/loker", controllers.LokerGetAll)
 	app.Post("/loker", controllers.CreateLoker)
 
+	app.Get("/posts", controllers.PostGetAll)
+	app.Post("/posts", controllers.CreatePost)
+
 }

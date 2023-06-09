@@ -11,7 +11,7 @@ type (
 	LockerResponse struct {
 		ID   	int 	`json:"id" form:"id"`
 		Code 	string 	`json:"code" form:"code"`
-		UserId	int 	`json:"user_id" form:"user_id"`
+		UserId	int 	`json:"-" form:"user_id"`
 	}
 )
 
