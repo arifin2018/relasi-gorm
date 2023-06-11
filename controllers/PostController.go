@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"relasi-gorm/databases"
 	"relasi-gorm/models"
 
@@ -9,8 +8,8 @@ import (
 )
 
 func PostGetAll(c *fiber.Ctx) error {
-	var Posts []models.Post
-	databases.DB.Preload("User").Find(&Posts)
+	var Posts []models.ResponsePostWithTag
+	databases.DB.Preload("User").Preload("Tag").Find(&Posts)
 
 	return c.Status(200).JSON(fiber.Map{
 		"Post": Posts,
@@ -26,22 +25,27 @@ func CreatePost(c *fiber.Ctx) error {
 		})
 	}
 
-	if post.Title == "" || post.Body == "" || post.TagID == nil {
+	if post.Title == "" || post.Body == "" || post.TagID == nil || len(post.TagID) <= 0 {
 		return c.Status(400).JSON(fiber.Map{
 			"err":"title,body or tagId is required",
 		})
 	}
 
-	
+	// postt := models.Post{ID: 8}
+
+	// err := databases.DB.Model(&postt).Preload("Tag").Find(&postt)
+	// log.Println(err.Error)
+	// return nil
 
 	databases.DB.Debug().Create(&post)
-	fmt.Println(post)
 
-	for _, tagId := range post.TagID {
-		postTag := new(models.PostTag)
-		postTag.PostId = post.ID
-		postTag.TagId = tagId 
-		databases.DB.Create(&postTag)
+	if len(post.TagID) > 0 {
+		for _, tagId := range post.TagID {
+			postTag := new(models.PostTag)
+			postTag.PostId = post.ID
+			postTag.TagId = tagId 
+			databases.DB.Create(&postTag)
+		}
 	}
 
 
